@@ -1,5 +1,5 @@
 '''
-This script will run through the slurm script "job.mpi," which is found in each of the set directories. When executed, this script will run each of the models
+This script will run through the slurm script "job.mpi," which is found in each of the mass directories. When executed, this script will run each of the models
 found within the set.
 '''
 

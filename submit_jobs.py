@@ -1,5 +1,5 @@
 '''
-Run this from the directory containing all of your sets (i.e. 0M to 7M)
+Run this from the directory containing all of your mass directories (i.e. 0M to 7M)
 '''
 
 import os

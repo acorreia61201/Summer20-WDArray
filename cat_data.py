@@ -1,11 +1,12 @@
 '''
-This script is to be run manually from each of the set directories after receiving results from each of the models. When executed, this script will concatenate
-the history.data files from each of the three segments of every model and create a new file, "full_history.data," within the model directories themselves. This may
-be used to graph HR diagrams or Kippenhahn diagrams as needed.
+This script is to be run manually from each of the mass directories after receiving results from each of the models. When executed, this script will concatenate
+the history.data files from each of the three segments of every model and create a new file, "full_history.data," within the model directories. If one or both of the 
+latter two history files is missing, the script will instead add to a counter that will report how many failed models there are in a given directory.
 '''
 
 import os
 
+counter = 0
 models = [f for f in os.listdir('.') if os.path.isdir(f)]
 
 for model in models:
@@ -22,6 +23,7 @@ for model in models:
 	        os.system("cat controls/LOGS_part1/history.data controls/LOGS_part2/history2.data controls/LOGS_part3/history3.data >> full_history.data")
 		os.chdir("..")
 	else:
-		print("failed")
+		counter = counter + 1
 		os.chdir("..")
 
+print(counter)

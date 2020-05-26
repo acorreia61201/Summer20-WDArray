@@ -1,8 +1,7 @@
 '''
-This script is run manually from a directory containing a master directory containing the necessary variables and modifications for duplication. When executed, 
-this script will make directories for every desired model and copy the make_co_wd directory into each, with modifications made by use of string.Template. Every 
-array directory you create should have a copy of the parent simulation, with each of the inlist files modified such that every prompt for mass and Z is replaced
-with the appropriate variable $mass or $z.
+This script is run manually from a directory containing a master directory with the necessary variables and modifications for duplication. When executed, 
+this script will make directories for every desired model and copy the make_co_wd directory into each, with modifications made by use of string.Template. These
+individual models will then be organized by mass into mass directories, and a job.mpi script will be copied into each mass directory.
 '''
 
 import os
