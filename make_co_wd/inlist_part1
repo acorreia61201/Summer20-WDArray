@@ -1,0 +1,115 @@
+
+&star_job
+
+      save_model_when_terminate = .true.
+      save_model_filename = 'part1.mod'
+
+      set_initial_age = .true.
+      initial_age = 0
+
+      set_initial_model_number = .true.
+      initial_model_number = 0
+
+      set_initial_dt = .true.
+      years_for_initial_dt = 10
+
+      set_initial_cumulative_energy_error = .true.
+      new_cumulative_energy_error = 0d0
+
+      !pgstar_flag = .true.
+
+      create_pre_main_sequence_model = .true.  
+
+/ ! end of star_job namelist
+
+
+&controls
+      ! check for retries as part of test_suite
+         max_number_retries = 400
+         max_model_number = 2400
+
+      backup_hold = 3
+      retry_hold = 0
+      neg_mass_fraction_hold = 3
+      
+      use_eps_mdot = .false.
+
+      x_integer_ctrl(1) = 1 ! part number
+      
+      he_layer_mass_lower_limit = 0.02d0
+      
+! wind
+      cool_wind_full_on_T = 9.99d9
+      hot_wind_full_on_T = 1d10
+      cool_wind_RGB_scheme = 'Reimers'
+      cool_wind_AGB_scheme = 'Blocker'
+      RGB_to_AGB_wind_switch = 1d-4
+      Reimers_scaling_factor = 0.5d0  
+      Blocker_scaling_factor = 0.5d0  
+
+! output
+      num_trace_history_values = 2
+      trace_history_value_name(1) = 'rel_E_err'
+      trace_history_value_name(2) = 'log_rel_run_E_err'
+
+      !photo_interval = 10
+      !profile_interval = 10
+      !history_interval = 1
+      !terminal_interval = 1
+
+! FOR DEBUGGING
+
+      !report_hydro_solver_progress = .true. ! set true to see info about newton iterations
+      !report_ierr = .true. ! if true, produce terminal output when have some internal error
+      !stop_for_bad_nums = .true.
+
+      ! hydro debugging
+      !hydro_check_everything = .true.
+      !hydro_inspectB_flag = .true.
+      !hydro_sizequ_flag = .true.
+      
+      ! for making logs, uncomment hydro_dump_call_number plus the following
+      ! to make residual logs, uncomment hydro_sizequ_flag
+      ! to make correction logs, uncomment hydro_inspectB_flag
+      ! to make jacobian logs, uncomment hydro_numerical_jacobian, hydro_save_numjac_plot_data
+      ! to do dfridr test, uncomment hydro_get_a_numerical_partial, hydro_test_partials_k,
+      !     hydro_numerical_jacobian, hydro_save_numjac_plot_data, hydro_dump_iter_number
+         
+      !hydro_get_a_numerical_partial = 1d-6
+      !hydro_test_partials_k = 1083
+      !hydro_numerical_jacobian = .true.
+      !hydro_save_numjac_plot_data = .true.
+      !hydro_dump_call_number = 2567
+      !hydro_dump_iter_number = 5
+      
+      !hydro_epsder_struct = 1d-6
+      !hydro_epsder_chem = 1d-6
+      !hydro_save_photo = .true. ! Saves a photo when hydro_call_number = hydro_dump_call_number -1
+
+      !fill_arrays_with_NaNs = .true.
+      
+      !max_years_for_timestep = 3.67628942044319d-05
+
+      !report_why_dt_limits = .true.
+      !report_all_dt_limits = .true.
+      !report_hydro_dt_info = .true.
+      !report_dX_nuc_drop_dt_limits = .true.
+      !report_bad_negative_xa = .true.
+      
+      !show_mesh_changes = .true.
+      !mesh_dump_call_number = 5189
+      !okay_to_remesh = .false.
+      
+      !trace_evolve = .true.
+
+
+/ ! end of controls namelist
+
+
+
+&pgstar
+         
+         Profile_Panels3_xmin = -101d0 ! only used if /= -101d0
+         Profile_Panels3_xmax = 1.5 ! -101d0 ! only used if /= -101d0
+
+/ ! end of pgstar namelist

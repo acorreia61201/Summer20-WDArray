@@ -1,0 +1,139 @@
+
+&star_job
+
+      load_saved_model = .true.
+      saved_model_name = 'part2.mod'
+
+      save_model_when_terminate = .true.
+      save_model_filename = 'part3.mod'
+
+      !set_initial_dt = .true.
+      !years_for_initial_dt = 1d-4
+
+      !pgstar_flag = .true.
+
+
+/ ! end of star_job namelist
+
+
+&controls      
+      ! check for retries as part of test_suite
+         max_number_retries = 50
+         max_model_number = 3100
+
+      x_integer_ctrl(1) = 3 ! part number
+
+      !log_L_lower_limit = -4d0
+      log_Teff_lower_limit = 4d0
+      
+      gold_newton_iterations_limit = 30
+
+      delta_lgL_limit = 0.05
+      delta_lgL_hard_limit = 0.15
+
+      delta_lgT_limit = 0.5
+      delta_lgT_hard_limit = 1
+      
+      delta_lgRho_limit = 1
+      delta_lgRho_hard_limit = -1
+
+      delta_lgTeff_limit = 0.1  
+      delta_lgTeff_hard_limit = 0.3
+
+      relax_hard_limits_after_retry = .false.
+      
+      net_logTcut_lo = 0
+      net_logTcut_lim = 0
+      
+      use_correction_for_KE_plus_PE_with_eps_grav_in_energy_eqn = .false.
+      use_dedt_form_of_energy_eqn = .false.
+
+      op_split_burn = .false.
+
+      atm_option = 'T_tau'
+      atm_T_tau_relation = 'Eddington'
+      atm_T_tau_opacity = 'fixed'
+      Pextra_factor = 1
+      
+! mesh
+      !mesh_delta_coeff = 1
+
+! diffusion
+      !do_element_diffusion = .true.    
+      
+      num_trace_history_values = 3
+      trace_history_value_name(1) = 'center_gamma'
+      trace_history_value_name(2) = 'rel_E_err'
+      trace_history_value_name(3) = 'log_rel_run_E_err'
+
+
+      photo_interval = 50
+      profile_interval = 50
+      history_interval = 10
+      terminal_interval = 10
+
+! FOR DEBUGGING
+
+      !report_hydro_solver_progress = .true. ! set true to see info about newton iterations
+      !report_ierr = .true. ! if true, produce terminal output when have some internal error
+      !stop_for_bad_nums = .true.
+
+      ! hydro debugging
+      !hydro_check_everything = .true.
+      !hydro_inspectB_flag = .true.
+      !hydro_sizequ_flag = .true.
+      
+      ! for making logs, uncomment hydro_dump_call_number plus the following
+      ! to make residual logs, uncomment hydro_sizequ_flag
+      ! to make correction logs, uncomment hydro_inspectB_flag
+      ! to make jacobian logs, uncomment hydro_numerical_jacobian, hydro_save_numjac_plot_data
+      ! to do dfridr test, uncomment hydro_get_a_numerical_partial, hydro_test_partials_k,
+      !     hydro_numerical_jacobian, hydro_save_numjac_plot_data, hydro_dump_iter_number
+         
+      !hydro_get_a_numerical_partial = 1d-6
+      !hydro_test_partials_k = 1083
+      !hydro_numerical_jacobian = .true.
+      !hydro_save_numjac_plot_data = .true.
+      !hydro_dump_call_number = 2567
+      !hydro_dump_iter_number = 5
+      
+      !hydro_epsder_struct = 1d-6
+      !hydro_epsder_chem = 1d-6
+      !hydro_save_photo = .true. ! Saves a photo when hydro_call_number = hydro_dump_call_number -1
+
+      !fill_arrays_with_NaNs = .true.
+      
+      !max_years_for_timestep = 3.67628942044319d-05
+
+      !report_why_dt_limits = .true.
+      !report_all_dt_limits = .true.
+      !report_hydro_dt_info = .true.
+      !report_dX_nuc_drop_dt_limits = .true.
+      !report_bad_negative_xa = .true.
+      
+      !show_mesh_changes = .true.
+      !mesh_dump_call_number = 5189
+      !okay_to_remesh = .false.
+      
+      !trace_evolve = .true.
+
+
+/ ! end of controls namelist
+
+
+
+&pgstar
+
+         HR_logT_min = 3.5 ! only used if /= -101d0
+         HR_logT_max = 5.8 ! only used if /= -101d0
+         HR_logL_min = -4.8 ! only used if /= -101d0
+         HR_logL_max = 5.2 ! only used if /= -101d0
+
+         show_HR_WD_instabilities = .true.
+         
+         Profile_Panels3_xmin = -101d0 ! only used if /= -101d0
+         Profile_Panels3_xmax = -101d0 ! only used if /= -101d0
+      
+         !Grid2_file_flag = .true.
+
+/ ! end of pgstar namelist

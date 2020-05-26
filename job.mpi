@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH -J $dir 
+#SBATCH -o $dir.%j.out
+#SBATCH -e $dir.%j.error
+#SBATCH --nodes=1 --sockets-per-node=2 --cores-per-socket=10 --threads-per-core=1 
+#SBATCH -t 24:00:00
+#SBATCH --mail-user acorreia7@umassd.edu
+#SBATCH --gres=gpu:M2050:0
+
+export OMP_NUM_THREADS=20
+python /home/acorreia7/make_co_array/execute_runs.py
