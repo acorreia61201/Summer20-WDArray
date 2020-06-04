@@ -7,3 +7,5 @@ The directories are run in parallel with the use of three scripts. submit_jobs.p
 cat_data.py is a script to be used once all of the models have completed or stopped. This program does a preliminary check for completion of any given model by searching for the second and third history.data files. If one or both are missing, the program will add to a counter that displays how many models failed and will continue the loop. If both are present, however, the program will concatenate the history.data files into a complete history file for the model.
 
 plotHR.py is a rudimentary script that defines a function "plot", which uses mesa_reader to plot an HR diagram from a given concatenated history file.
+
+flash_input.py is a script that converts the output of each model, "part3.mod", to a format friendly for FLASH. This script will be copied to each of the model directories and run from each.

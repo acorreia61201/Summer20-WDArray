@@ -11,6 +11,7 @@ from string import Template
 mass_list = np.arange(0.25, 8, 0.25)
 Z_list = [0.014, 0.017, 0.020, 0.023, 0.026]
 
+#creating individual model directories
 for mass in mass_list:
 	for Z in Z_list:
 		#make a directory titled by mass and Z
@@ -21,6 +22,9 @@ for mass in mass_list:
 
 		#cd to each directory
 		os.chdir("WD_" + str(mass) + "_M_" + str(Z) + "_Z")
+
+		#cp flash_input.py and change directores to controls
+		os.system("cp ../flash_input.py .")
 		os.chdir("controls")
 
 		#substitute the variables $mass and $z with the mass and Z values from the string
