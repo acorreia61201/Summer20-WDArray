@@ -1,31 +1,82 @@
 '''
-This script is run manually from a directory containing a master directory with the necessary variables and modifications for duplication. When executed, 
-this script will make directories for every desired model and copy the make_co_wd directory into each, with modifications made by use of string.Template. These
-individual models will then be organized by mass into mass directories, and a job.mpi script will be copied into each mass directory.
+This program creates model directories varied by mass and metallicity (z). Lower mass models use 1M_pre_ms_to_wd, while higher mass models use make_co_wd. In the
+future, extra functionality will be added to make the highest mass models run on make_o_ne_wd or make_he_wd. The individual directories are then organized into
+mass directories, and these mass directories are placed into a "models" directory.
 '''
 
 import os
 import numpy as np
 from string import Template
 
-mass_list = np.arange(0.25, 8, 0.25)
+#create an array using the low-mass suitable 1M_pre_ms_to_wd and the higher-mass suitable make_co_wd
+
+#1M_pre_ms_to_wd
+mass_list = np.arange(0.25, 1.75, 0.25)
 Z_list = [0.014, 0.017, 0.020, 0.023, 0.026]
 
-#creating individual model directories
+for mass in mass_list:
+	for Z in Z_list:
+		#make a directory titled by mass and Z
+                os.mkdir("WD_" + str(mass) + "_M_" + str(Z) + "_Z")
+
+                #copy master model to each new directory
+                os.system("cp -rf 1M_pre_ms_to_wd WD_" + str(mass) + "_M_" + str(Z) + "_Z/controls")
+
+                #cd to each directory
+                os.chdir("WD_" + str(mass) + "_M_" + str(Z) + "_Z")
+
+                #cp flash_input.py and change directores to controls
+                os.system("cp ../flash_input.py .")
+                os.chdir("controls")
+
+		#substitute the variables $mass and $z with the mass and Z values from the string
+                d = {'mass':mass, 'z':Z}
+
+                #inlist_start
+                filein = open("/home/acorreia7/make_co_array/1M_pre_ms_to_wd/inlist_start")
+                src = Template(filein.read())
+                result = src.substitute(d)
+                out_inlist = open("inlist_start", "w")
+                out_inlist.write(result)
+                out_inlist.close()
+
+ 		#inlist_to_end_agb 
+                filein = open("/home/acorreia7/make_co_array/1M_pre_ms_to_wd/inlist_to_end_agb")
+                src = Template(filein.read())
+                result = src.substitute(d)
+                out_inlist = open("inlist_to_end_agb", "w")
+                out_inlist.write(result)
+                out_inlist.close()
+
+		#inlist_to_wd
+                filein = open("/home/acorreia7/make_co_array/1M_pre_ms_to_wd/inlist_to_wd")
+                src = Template(filein.read())
+                result = src.substitute(d)
+                out_inlist = open("inlist_to_wd", "w")
+                out_inlist.write(result)
+                out_inlist.close()
+
+                #cd back to the initial directory to continue the loop
+                os.chdir("../..")
+
+#make_co_wd
+mass_list = np.arange(1.75, 8, 0.25)
+Z_list = [0.014, 0.017, 0.020, 0.023, 0.026]
+
 for mass in mass_list:
 	for Z in Z_list:
 		#make a directory titled by mass and Z
 		os.mkdir("WD_" + str(mass) + "_M_" + str(Z) + "_Z")
 
-		#copy master 1M to each new directory
+		#copy master model to each new directory
 		os.system("cp -rf make_co_wd WD_" + str(mass) + "_M_" + str(Z) + "_Z/controls")
 
 		#cd to each directory
 		os.chdir("WD_" + str(mass) + "_M_" + str(Z) + "_Z")
 
 		#cp flash_input.py and change directores to controls
-		os.system("cp ../flash_input.py .")
-		os.chdir("controls")
+                os.system("cp ../flash_input.py .")
+                os.chdir("controls")
 
 		#substitute the variables $mass and $z with the mass and Z values from the string
                 d = {'mass':mass, 'z':Z}
@@ -47,14 +98,15 @@ for i in range(0, 8):
 	os.system("mv WD_" + str(i) + "* " + str(i) + "M")
 
 #copy the sbatch script into each parent directory
-dir_list = [0M, 1M, 2M, 3M, 4M, 5M, 6M, 7M]
+dir_list = ['0M', '1M', '2M', '3M', '4M', '5M', '6M', '7M']
 
 for dir in dir_list:
-	#copy the job.mpi template from the project directory into each mass directory
-	os.system("cp job.mpi " + str(dir)) 
+	#copy the job.mpi template and cat_data.py from the project directory into each mass directory
+	os.system("cp job.mpi " + dir)
+	os.system("cp cat_data.py " + dir) 
 	
 	#cd to each mass directory and edit the $dir variable in the template
-	os.system("cd " + str(dir))
+        os.chdir(dir)
 	d = {'dir':dir}
 	filein = open("job.mpi")
 	src = Template(filein.read())
@@ -64,4 +116,8 @@ for dir in dir_list:
 	out.close()
 
 	#continue the loop
-	os.system("cd ..")
+	os.chdir("..")
+
+#put the mass directories into a larger project directory for organization
+os.mkdir("models")
+os.system("mv *M models")
